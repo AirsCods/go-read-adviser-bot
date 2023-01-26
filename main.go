@@ -2,14 +2,17 @@ package main
 
 import (
 	"flag"
+	"go-read-adviser-bot/clients/telegram"
 	"log"
 )
 
-func main() {
-	// Получение токена из флага
-	token = mustToken()
+const (
+	tgBotHost = "api.telegram.org"
+)
 
-	// tgClient = telegram.New(token)
+func main() {
+
+	tgClient = telegram.New(tgBotHost, mustToken())
 
 	// Отправляет запросы и получает новые события
 	// fetcher = fetcher.New()
