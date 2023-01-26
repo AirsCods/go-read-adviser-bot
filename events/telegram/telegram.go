@@ -6,6 +6,7 @@ import (
 	"go-read-adviser-bot/events"
 	"go-read-adviser-bot/lib/e"
 	"go-read-adviser-bot/storage"
+	"go-read-adviser-bot/storage/files"
 )
 
 type Processor struct {
@@ -24,7 +25,7 @@ var (
 	ErrUnknownMetaType  = errors.New("unknown meta type")
 )
 
-func New(client *telegram.Client, storage storage.Storage) *Processor {
+func New(client *telegram.Client, storage files.Storage) *Processor {
 	return &Processor{
 		tg:      client,
 		storage: storage,

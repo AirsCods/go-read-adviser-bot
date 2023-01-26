@@ -2,25 +2,32 @@ package main
 
 import (
 	"flag"
-	"go-read-adviser-bot/clients/telegram"
+	tgClient "go-read-adviser-bot/clients/telegram"
+	event_consumer "go-read-adviser-bot/consumer/event-consumer"
+	"go-read-adviser-bot/events/telegram"
+	"go-read-adviser-bot/storage/files"
 	"log"
 )
 
 const (
-	tgBotHost = "api.telegram.org"
+	tgBotHost   = "api.telegram.org"
+	storagePath = "storage"
+	bathSize    = 100
 )
 
 func main() {
+	eventsProcessor := telegram.New(
+		tgClient.New(tgBotHost, mustToken()),
+		files.New(storagePath),
+	)
+	log.Print("service started")
 
-	tgClient = telegram.New(tgBotHost, mustToken())
+	consumer := event_consumer.New(eventsProcessor, eventsProcessor, bathSize)
 
-	// Отправляет запросы и получает новые события
-	// fetcher = fetcher.New()
+	if err := consumer.Start(); err != nil {
+		log.Fatal("")
+	}
 
-	// После обработки отправляет нвоые сообщения
-	// processor = processor.New()
-
-	//consumer.Start(fetcher, processor)
 }
 
 func mustToken() string {
